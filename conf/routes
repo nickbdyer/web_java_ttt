@@ -11,6 +11,9 @@ POST    /newgame                    controllers.HomeController.newgame()
 # Game
 GET     /game                       controllers.HomeController.game()
 
+# Make Move
+GET     /makeMove                   controllers.HomeController.makeMove()
+
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

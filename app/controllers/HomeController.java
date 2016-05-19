@@ -1,8 +1,12 @@
 package controllers;
 
-import play.mvc.*;
-
-import views.html.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import play.libs.Json;
+import play.mvc.Controller;
+import play.mvc.Result;
+import uk.nickbdyer.tictactoe.Board;
+import views.html.game;
+import views.html.index;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -28,6 +32,9 @@ public class HomeController extends Controller {
         return redirect("/game");
     }
 
-
+    public Result makeMove() {
+        JsonNode json = Json.toJson(new Board().getCells());
+        return ok(json);
+    }
 
 }
