@@ -20,14 +20,13 @@ public class IntegrationTest {
     }
 
     @Test
-    public void newGameTest() {
+    public void redirectsFromNewGameToGame() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
             browser.goTo("http://localhost:3333");
             browser.click("#newgame");
             assertEquals("/game", browser.url());
-            assertTrue(browser.pageSource().contains("X plays first"));
         });
     }
 
-
 }
+
