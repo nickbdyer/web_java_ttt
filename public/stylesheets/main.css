@@ -1,5 +1,12 @@
 body {
     font-family: monospace;
+    text-align: center;
+}
+
+#page-wrap {
+    width: 800px;
+    margin: 0 auto;;
+    text-align: left;
 }
 
 table {
