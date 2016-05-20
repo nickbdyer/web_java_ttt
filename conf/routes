@@ -12,7 +12,7 @@ POST    /newgame                    controllers.HomeController.newgame()
 GET     /game                       controllers.HomeController.game()
 
 # Make Move
-GET     /makeMove                   controllers.HomeController.makeMove()
+POST     /makeMove                   controllers.HomeController.makeMove()
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count

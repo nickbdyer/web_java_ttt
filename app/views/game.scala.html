@@ -1,6 +1,5 @@
 @import uk.nickbdyer.tictactoe.Mark
 
-@import uk.nickbdyer.tictactoe.Mark._
 @(message: String, board: List[Mark])
 
 @main("TicTacToe") {
@@ -9,20 +8,25 @@
 
     @message
 
-    X plays first!
-
     <table>
         <tbody>
             @for(index <- 0 until board.size){
                 @if(index % 3 == 0){
                     <tr>
                 }
+                <form method="post" action="/makeMove">
                 @if(board(index) == Mark.EMPTY){
-                    <td><input type="text" value=""></td>
+                    <td>
+                        <input type="hidden" name="position" value="@index">
+                        <input type="submit" value="">
+                    </td>
                 } else {
-                    <td><input type="text" value="@board(index)"></td>
+                    <td>
+                        <input type="hidden" name="position" value="@index">
+                        <input type="submit" value="@board(index)">
+                    </td>
                 }
-
+                </form>
                 @if(index % 3 == 2 || index == (board.size - 1)){
                     </tr>
                 }
