@@ -2,6 +2,7 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import services.WebInterface;
 import uk.nickbdyer.tictactoe.Board;
 import uk.nickbdyer.tictactoe.Game;
 import uk.nickbdyer.tictactoe.players.PlayerFactory;
@@ -18,7 +19,7 @@ public class HomeController extends Controller {
     private Game currentGame;
 
     public Result index() {
-        return ok(index.render("Your new application is ready."));
+        return ok(index.render("Please click below to start a new game!"));
     }
 
     public Result game() {
@@ -30,7 +31,7 @@ public class HomeController extends Controller {
 
     public Result newgame() {
         board = new Board();
-        currentGame = new Game(new PlayerFactory().create(HvsH));
+        currentGame = new Game(new PlayerFactory(new WebInterface()).create(HvsH));
         return redirect("/game");
     }
 
