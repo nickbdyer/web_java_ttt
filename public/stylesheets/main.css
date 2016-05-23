@@ -17,11 +17,21 @@ table, th, td {
     border: 1px solid black;
 }
 
-input[type="submit"] {
-    display: block;
-    margin: 0;
-    width: auto;
+td {
     height: 55px;
+    width: 55px;
+    font-size: 18px;
+    text-align: center;
+}
+
+td > input[type="submit"] {
+    width: 55px;
+}
+
+input[type="submit"] {
+    margin: 0;
+    height: 55px;
+    width: auto;
     font-size: 18px;
     font-family: monospace;
     box-shadow: none;
@@ -31,7 +41,6 @@ input[type="submit"] {
     border: solid 1px #dcdcdc;
     transition: box-shadow 0.3s, border 0.3s;
 }
-input[type="submit"]:focus,
 input[type="submit"]:hover {
     outline: none;
     border: solid 1px #707070;

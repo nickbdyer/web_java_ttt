@@ -1,12 +1,23 @@
 @import uk.nickbdyer.tictactoe.Mark
 
-@(message: String, board: List[Mark])
+@(message: String, board: List[Mark], winningMark: Mark, draw: Boolean)
 
 @main("TicTacToe") {
 
     <h1>TicTacToe</h1>
 
-    @message
+
+    @if(draw) {
+        It's a draw!!
+    } else {
+        @if(winningMark != Mark.EMPTY) {
+            @winningMark is the winner!!
+        } else {
+            @message
+        }
+    }
+
+    <br>
 
     <table>
         <tbody>
@@ -15,16 +26,18 @@
                     <tr>
                 }
                 <form method="post" action="/makeMove">
-                @if(board(index) == Mark.EMPTY){
-                    <td>
-                        <input type="hidden" name="position" value="@index">
-                        <input type="submit" value="">
-                    </td>
-                } else {
-                    <td>
-                        <input type="hidden" name="position" value="@index">
-                        <input type="submit" value="@board(index)">
-                    </td>
+                @if(board(index) == Mark.EMPTY && (draw || winningMark != Mark.EMPTY)){
+                    <td></td>
+                } else { @if(board(index) == Mark.EMPTY) {
+                        <td>
+                            <input type="hidden" name="position" value="@index">
+                            <input type="submit" value="">
+                        </td>
+                    } else {
+                        <td>
+                            @board(index)
+                        </td>
+                    }
                 }
                 </form>
                 @if(index % 3 == 2 || index == (board.size - 1)){
@@ -34,4 +47,10 @@
         </tbody>
     </table>
 
+
+    @if(draw || winningMark != Mark.EMPTY) {
+        <form method="post" action="/newgame">
+            <input id="newgame" type="submit" value="Restart Game">
+        </form>
+    }
 }
