@@ -4,7 +4,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import uk.nickbdyer.tictactoe.Board;
 import uk.nickbdyer.tictactoe.Game;
-import uk.nickbdyer.tictactoe.WebInterface;
 import uk.nickbdyer.tictactoe.players.PlayerFactory;
 import views.html.game;
 import views.html.index;
@@ -31,7 +30,7 @@ public class HomeController extends Controller {
 
     public Result newgame() {
         board = new Board();
-        currentGame = new Game(new PlayerFactory().create(HvsH, new WebInterface()));
+        currentGame = new Game(new PlayerFactory().create(HvsH));
         return redirect("/game");
     }
 
