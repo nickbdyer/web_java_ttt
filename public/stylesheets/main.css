@@ -6,11 +6,13 @@ body {
 #page-wrap {
     width: 800px;
     margin: 0 auto;;
-    text-align: left;
+    text-align: center;
 }
 
 table {
     border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 table, th, td {
