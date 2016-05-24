@@ -37,8 +37,7 @@ public class HomeController extends Controller {
 
     public Result makeMove() {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
-        board.mark(Integer.valueOf(request.get("position")[0]), currentGame.getCurrentPlayer().getMark());
-        currentGame.swapPlayers();
+        currentGame.takeTurn(board, Integer.valueOf(request.get("position")[0]));
         return ok(game.render("Let's Play!", board.getCells(), board.getWinningMark(), board.isDraw()));
     }
 
