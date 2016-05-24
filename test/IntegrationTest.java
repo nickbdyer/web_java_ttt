@@ -20,10 +20,19 @@ public class IntegrationTest {
     }
 
     @Test
-    public void redirectsFromNewGameToGame() {
+    public void redirectsFromNewGameToChooseGame() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
             browser.goTo("http://localhost:3333");
             browser.click("#newgame");
+            assertEquals("/chooseGame", browser.url());
+        });
+    }
+
+    @Test
+    public void redirectsFromChooseGameToGame() {
+        running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
+            browser.goTo("http://localhost:3333");
+            browser.click("#HvsH");
             assertEquals("/game", browser.url());
         });
     }
