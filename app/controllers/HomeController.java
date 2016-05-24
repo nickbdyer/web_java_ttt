@@ -34,6 +34,8 @@ public class HomeController extends Controller {
         board = new Board();
         ui = new WebInterface();
         currentGame = new Game(new PlayerFactory(ui).create(HvsH));
+//        Map<String, String[]> request = request().body().asFormUrlEncoded();
+//        currentGame = new Game(new PlayerFactory(ui).create(GameType.values()[request.get("gameType")[0]]);
         return redirect("/game");
     }
 
