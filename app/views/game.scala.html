@@ -1,15 +1,13 @@
 @import uk.nickbdyer.tictactoe.Mark
 
-@(message: String, board: List[Mark], winningMark: Mark, draw: Boolean, isOver: Boolean)
+@(message: String, board: List[Mark], gameOverMessage: String, isOver: Boolean)
 
 @main("TicTacToe") {
 
     <h1>TicTacToe</h1>
 
     @if(isOver) {
-        @endGame(draw, winningMark)
-    } else {
-        @message
+        @gameOverMessage
     }
 
     <br>
