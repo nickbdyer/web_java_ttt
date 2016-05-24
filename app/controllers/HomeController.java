@@ -17,6 +17,7 @@ public class HomeController extends Controller {
 
     private Board board;
     private Game currentGame;
+    private WebInterface ui;
 
     public Result index() {
         return ok(index.render("Please click below to start a new game!"));
@@ -31,13 +32,15 @@ public class HomeController extends Controller {
 
     public Result newgame() {
         board = new Board();
-        currentGame = new Game(new PlayerFactory(new WebInterface()).create(HvsH));
+        ui = new WebInterface();
+        currentGame = new Game(new PlayerFactory(ui).create(HvsH));
         return redirect("/game");
     }
 
     public Result makeMove() {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
-        currentGame.takeTurn(board, Integer.valueOf(request.get("position")[0]));
+        ui.setLastInput(Integer.valueOf(request.get("position")[0]));
+        currentGame.takeTurn(board, currentGame.getCurrentPlayer().choosePosition(board));
         return ok(game.render("Let's Play!", board.getCells(), board.getWinningMark(), board.isDraw()));
     }
 
