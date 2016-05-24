@@ -1,6 +1,6 @@
 @import uk.nickbdyer.tictactoe.Mark
 
-@(message: String, board: List[Mark], winningMark: Mark, draw: Boolean)
+@(message: String, board: List[Mark], winningMark: Mark, draw: Boolean, isOver: Boolean)
 
 @main("TicTacToe") {
 
@@ -20,33 +20,7 @@
     <br>
     <br>
 
-    <table>
-        <tbody>
-            @for(index <- 0 until board.size){
-                @if(index % 3 == 0){
-                    <tr>
-                }
-                <form method="post" action="/makeMove">
-                @if(board(index) == Mark.EMPTY && (draw || winningMark != Mark.EMPTY)){
-                    <td></td>
-                } else { @if(board(index) == Mark.EMPTY) {
-                        <td>
-                            <input type="hidden" name="position" value="@index">
-                            <input type="submit" value="">
-                        </td>
-                    } else {
-                        <td>
-                            @board(index)
-                        </td>
-                    }
-                }
-                </form>
-                @if(index % 3 == 2 || index == (board.size - 1)){
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+    @board(board, isOver)
 
 
     @if(draw || winningMark != Mark.EMPTY) {

@@ -1,0 +1,31 @@
+@import uk.nickbdyer.tictactoe.Mark
+
+@(board: List[Mark], isOver: Boolean)
+
+<table>
+  <tbody>
+  @for(index <- 0 until board.size){
+    @if(index % 3 == 0){
+      <tr>
+      }
+    <form method="post" action="/makeMove">
+    @if(board(index) == Mark.EMPTY && isOver) {
+      <td></td>
+    } else { @if(board(index) == Mark.EMPTY) {
+      <td>
+        <input type="hidden" name="position" value="@index">
+        <input type="submit" value="">
+      </td>
+    } else {
+      <td>
+      @board(index)
+      </td>
+    }
+    }
+    </form>
+    @if(index % 3 == 2 || index == (board.size - 1)){
+    </tr>
+    }
+  }
+  </tbody>
+</table>

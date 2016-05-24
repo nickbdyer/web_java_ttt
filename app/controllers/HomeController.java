@@ -24,10 +24,7 @@ public class HomeController extends Controller {
     }
 
     public Result game() {
-        if (board == null) {
-            board = new Board();
-        }
-        return ok(game.render("Let's Play!", board.getCells(), board.getWinningMark(), board.isDraw()));
+        return ok(game.render("Let's Play!", board.getCells(), board.getWinningMark(), board.isDraw(), currentGame.isOver(board)));
     }
 
     public Result newgame() {
@@ -43,7 +40,7 @@ public class HomeController extends Controller {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
         ui.setLastInput(Integer.valueOf(request.get("position")[0]));
         currentGame.takeTurn(board, currentGame.getCurrentPlayer().choosePosition(board));
-        return ok(game.render("Let's Play!", board.getCells(), board.getWinningMark(), board.isDraw()));
+        return ok(game.render("Let's Play!", board.getCells(), board.getWinningMark(), board.isDraw(), currentGame.isOver(board)));
     }
 
 }
