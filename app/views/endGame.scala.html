@@ -1,0 +1,9 @@
+@import uk.nickbdyer.tictactoe.Mark
+
+@(draw: Boolean, winner: Mark)
+
+@if(draw) {
+    It's a draw!!
+} else {
+    @winner is the winner!!
+}

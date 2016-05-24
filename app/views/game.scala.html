@@ -6,24 +6,20 @@
 
     <h1>TicTacToe</h1>
 
-
-    @if(draw) {
-        It's a draw!!
+    @if(isOver) {
+        @endGame(draw, winningMark)
     } else {
-        @if(winningMark != Mark.EMPTY) {
-            @winningMark is the winner!!
-        } else {
-            @message
-        }
+        @message
     }
 
     <br>
     <br>
 
-    @board(board, isOver)
+    @grid(board, isOver)
 
+    <br>
 
-    @if(draw || winningMark != Mark.EMPTY) {
+    @if(isOver) {
         <form method="post" action="/newgame">
             <input id="newgame" type="submit" value="Restart Game">
         </form>
