@@ -8,7 +8,7 @@
             @if(index % 3 == 0){
                 <tr>
                 }
-            <form method="post" action="/makeMove">
+            <form method="GET" action="/play">
                 <td>
             @if(board(index) == Mark.EMPTY && !isOver) {
                     <input type="hidden" name="position" value="@index">

@@ -43,10 +43,15 @@ public class HomeController extends Controller {
         return redirect("/game");
     }
 
-    public Result makeMove() {
-        Map<String, String[]> request = request().body().asFormUrlEncoded();
-        ui.setLastInput(Integer.valueOf(request.get("position")[0]));
-        currentGame.takeTurn(board, currentGame.getCurrentPlayer().choosePosition(board));
+    public Result play() {
+        Map<String, String[]> request = request().queryString();
+        if(request.get("position") != null) {
+            ui.setLastInput(Integer.valueOf(request.get("position")[0]));
+        }
+        if (currentGame.getCurrentPlayer().choosePosition(board) != -1) {
+            currentGame.takeTurn(board, currentGame.getCurrentPlayer().choosePosition(board));
+            ui.setLastInput(-1);
+        }
         return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
     }
 
