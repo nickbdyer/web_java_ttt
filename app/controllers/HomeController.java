@@ -20,6 +20,14 @@ public class HomeController extends Controller {
     private Game currentGame;
     private WebInterface ui;
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public Game getGame() {
+        return currentGame;
+    }
+
     public Result index() {
         return ok(index.render("Please click below to start a new game!"));
     }
@@ -33,13 +41,13 @@ public class HomeController extends Controller {
     }
 
     public Result newGame() {
-        board = new Board();
-        ui = new WebInterface();
         return redirect("/chooseGame");
     }
 
     public Result chooseGame() {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
+        board = new Board();
+        ui = new WebInterface();
         currentGame = new Game(new PlayerFactory(ui).create(GameType.values()[Integer.valueOf(request.get("gameType")[0])]));
         return redirect("/game");
     }
