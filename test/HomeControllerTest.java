@@ -150,6 +150,19 @@ public class HomeControllerTest extends WithApplication{
         assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, O, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
     }
 
+    @Test
+    public void testNoInputFromUser() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "0");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        Result result = homeController.play(Option.empty());
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertEquals(Arrays.asList(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+    }
+
     // Shows who won
 
 }
