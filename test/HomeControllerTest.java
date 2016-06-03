@@ -6,6 +6,7 @@ import play.inject.guice.GuiceApplicationBuilder;
 import play.mvc.Result;
 import play.test.Helpers;
 import play.test.WithApplication;
+import scala.Option;
 import uk.nickbdyer.tictactoe.players.DelayedComputer;
 import uk.nickbdyer.tictactoe.players.Human;
 
@@ -19,9 +20,7 @@ import static play.mvc.Http.Status.OK;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.invokeWithContext;
-import static uk.nickbdyer.tictactoe.Mark.EMPTY;
-import static uk.nickbdyer.tictactoe.Mark.O;
-import static uk.nickbdyer.tictactoe.Mark.X;
+import static uk.nickbdyer.tictactoe.Mark.*;
 
 public class HomeControllerTest extends WithApplication{
 
@@ -116,7 +115,7 @@ public class HomeControllerTest extends WithApplication{
         form.put("gameType", "0");
         invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
-        Result result = homeController.play("0");
+        Result result = homeController.play(Option.apply(0));
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
@@ -129,8 +128,8 @@ public class HomeControllerTest extends WithApplication{
         form.put("gameType", "0");
         invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
-        homeController.play("0");
-        Result result = homeController.play("0");
+        homeController.play(Option.apply(0));
+        Result result = homeController.play(Option.apply(0));
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
@@ -143,8 +142,8 @@ public class HomeControllerTest extends WithApplication{
         form.put("gameType", "4");
         invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
-        homeController.play("0");
-        Result result = homeController.play(null);
+        homeController.play(Option.apply(0));
+        Result result = homeController.play(Option.empty());
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());

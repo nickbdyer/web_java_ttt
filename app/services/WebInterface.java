@@ -26,8 +26,8 @@ public class WebInterface implements UserInterface {
         }
     }
 
-    public void assignUserChoice(String position) {
-        setLastInput(Integer.valueOf(position));
+    public void assignUserChoice(int position) {
+        setLastInput(position);
     }
 
     public void makeNextMove(Game game, Board board) {

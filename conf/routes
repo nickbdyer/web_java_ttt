@@ -4,7 +4,7 @@ POST    /newgame                    controllers.HomeController.newGame()
 
 GET     /game                       controllers.HomeController.game()
 
-GET     /play                       controllers.HomeController.play(position ?= null)
+GET     /play                       controllers.HomeController.play(position: Option[java.lang.Integer])
 
 POST    /chooseGame                 controllers.HomeController.chooseGame()
 

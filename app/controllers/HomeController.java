@@ -2,6 +2,7 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.Option;
 import services.WebInterface;
 import uk.nickbdyer.tictactoe.Board;
 import uk.nickbdyer.tictactoe.Game;
@@ -51,8 +52,10 @@ public class HomeController extends Controller {
         return redirect("/game");
     }
 
-    public Result play(String position) {
-        ui.assignUserChoice(position);
+    public Result play(Option<Integer> position) {
+        if (position.isDefined()) {
+            ui.assignUserChoice(position.get());
+        }
         ui.makeNextMove(currentGame, board);
         return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
     }
