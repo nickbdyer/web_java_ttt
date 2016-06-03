@@ -1,6 +1,7 @@
 package services;
 
 import uk.nickbdyer.tictactoe.Board;
+import uk.nickbdyer.tictactoe.Game;
 import uk.nickbdyer.tictactoe.UserInterface;
 
 public class WebInterface implements UserInterface {
@@ -21,6 +22,19 @@ public class WebInterface implements UserInterface {
         } else {
             String mark = String.valueOf(board.getWinningMark());
             return mark + " is the winner!!";
+        }
+    }
+
+    public void assignUserChoice(String position) {
+        if(position != null) {
+            setLastInput(Integer.valueOf(position));
+        }
+    }
+
+    public void makeNextMove(Game game, Board board) {
+        if (game.getCurrentPlayer().choosePosition(board) != -1) {
+            game.takeTurn(board, game.getCurrentPlayer().choosePosition(board));
+            setLastInput(-1);
         }
     }
 }

@@ -2,7 +2,6 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
-import services.MoveHelper;
 import services.WebInterface;
 import uk.nickbdyer.tictactoe.Board;
 import uk.nickbdyer.tictactoe.Game;
@@ -53,8 +52,8 @@ public class HomeController extends Controller {
     }
 
     public Result play(String position) {
-        MoveHelper.assignUserChoice(ui, position);
-        MoveHelper.makeNextMove(ui, currentGame, board);
+        ui.assignUserChoice(position);
+        ui.makeNextMove(currentGame, board);
         return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
     }
 
