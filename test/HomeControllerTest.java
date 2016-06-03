@@ -9,6 +9,7 @@ import play.test.WithApplication;
 import uk.nickbdyer.tictactoe.players.DelayedComputer;
 import uk.nickbdyer.tictactoe.players.Human;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import static play.mvc.Http.Status.OK;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.invokeWithContext;
+import static uk.nickbdyer.tictactoe.Mark.EMPTY;
 
 public class HomeControllerTest extends WithApplication{
 
@@ -92,8 +94,33 @@ public class HomeControllerTest extends WithApplication{
         assertEquals("/game", result.header("Location").get());
         assertTrue(homeController.getGame().getCurrentPlayer() instanceof DelayedComputer);
     }
+    
+    @Test
+    public void testShowTheBoard() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "0");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        Result result = homeController.game();
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertEquals(Arrays.asList(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+    }
 
-    // Shows the board
+    @Test
+    public void testMakeAMove() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "0");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        Result result = homeController.play();
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertEquals(Arrays.asList(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+    }
+
     // Can make a move
     // Can not make a move if invalid
     // Shows who won
