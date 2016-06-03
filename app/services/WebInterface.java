@@ -6,7 +6,7 @@ import uk.nickbdyer.tictactoe.UserInterface;
 
 public class WebInterface implements UserInterface {
 
-    private int lastInput;
+    private int lastInput = -1;
 
     public void setLastInput(int position) {
        this.lastInput = position;

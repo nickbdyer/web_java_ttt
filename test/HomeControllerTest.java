@@ -163,6 +163,43 @@ public class HomeControllerTest extends WithApplication{
         assertEquals(Arrays.asList(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
     }
 
-    // Shows who won
+    @Test
+    public void testXWinner() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "0");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        homeController.play(Option.apply(0));
+        homeController.play(Option.apply(3));
+        homeController.play(Option.apply(1));
+        homeController.play(Option.apply(4));
+        homeController.play(Option.apply(2));
+        Result result = homeController.play(Option.empty());
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertTrue(contentAsString(result).contains("X is the winner!!"));
+        assertEquals(Arrays.asList(X, X, X, O, O, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+    }
+
+    @Test
+    public void testOWinner() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "0");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        homeController.play(Option.apply(8));
+        homeController.play(Option.apply(0));
+        homeController.play(Option.apply(3));
+        homeController.play(Option.apply(1));
+        homeController.play(Option.apply(4));
+        homeController.play(Option.apply(2));
+        Result result = homeController.play(Option.empty());
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertTrue(contentAsString(result).contains("O is the winner!!"));
+        assertEquals(Arrays.asList(O, O, O, X, X, EMPTY, EMPTY, EMPTY, X), homeController.getBoard().getCells());
+    }
 
 }
