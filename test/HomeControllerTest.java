@@ -20,6 +20,7 @@ import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.invokeWithContext;
 import static uk.nickbdyer.tictactoe.Mark.EMPTY;
+import static uk.nickbdyer.tictactoe.Mark.O;
 import static uk.nickbdyer.tictactoe.Mark.X;
 
 public class HomeControllerTest extends WithApplication{
@@ -134,6 +135,20 @@ public class HomeControllerTest extends WithApplication{
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
         assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+    }
+
+    @Test
+    public void testComputerPlayerMove() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "4");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        homeController.play("0");
+        Result result = homeController.play(null);
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, O, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
     }
 
     // Shows who won
