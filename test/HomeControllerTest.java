@@ -122,7 +122,20 @@ public class HomeControllerTest extends WithApplication{
         assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
     }
 
-    // Can not make a move if invalid
+    @Test
+    public void testInvalidMove() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "0");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        homeController.play("0");
+        Result result = homeController.play("0");
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+    }
+
     // Shows who won
 
 }
