@@ -52,8 +52,8 @@ public class HomeController extends Controller {
         return redirect("/game");
     }
 
-    public Result play() {
-        MoveHelper.assignUserChoice(ui, request().queryString());
+    public Result play(String position) {
+        MoveHelper.assignUserChoice(ui, position);
         MoveHelper.makeNextMove(ui, currentGame, board);
         return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
     }

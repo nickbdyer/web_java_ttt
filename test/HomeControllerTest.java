@@ -20,6 +20,7 @@ import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.invokeWithContext;
 import static uk.nickbdyer.tictactoe.Mark.EMPTY;
+import static uk.nickbdyer.tictactoe.Mark.X;
 
 public class HomeControllerTest extends WithApplication{
 
@@ -114,14 +115,13 @@ public class HomeControllerTest extends WithApplication{
         form.put("gameType", "0");
         invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
-        Result result = homeController.play();
+        Result result = homeController.play("0");
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
-        assertEquals(Arrays.asList(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+        assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
     }
 
-    // Can make a move
     // Can not make a move if invalid
     // Shows who won
 

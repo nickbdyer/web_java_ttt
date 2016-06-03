@@ -3,13 +3,11 @@ package services;
 import uk.nickbdyer.tictactoe.Board;
 import uk.nickbdyer.tictactoe.Game;
 
-import java.util.Map;
-
 public class MoveHelper {
 
-    public static void assignUserChoice(WebInterface ui, Map<String, String[]> request) {
-        if(request.get("position") != null) {
-            ui.setLastInput(Integer.valueOf(request.get("position")[0]));
+    public static void assignUserChoice(WebInterface ui, String position) {
+        if(position != null) {
+            ui.setLastInput(Integer.valueOf(position));
         }
     }
 
