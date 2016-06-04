@@ -164,6 +164,23 @@ public class HomeControllerTest extends WithApplication{
     }
 
     @Test
+    public void testHumanCannotTakeComputerMove() {
+        Map form = new HashMap<String, String>();
+        form.put("gameType", "4");
+        invokeWithContext(Helpers.fakeRequest().bodyForm(form),
+                () -> homeController.chooseGame());
+        homeController.play(Option.apply(0));
+        homeController.play(Option.apply(1));
+        homeController.play(Option.empty());
+        Result result = homeController.play(Option.empty());
+        assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+        assertEquals("utf-8", result.charset().get());
+        assertEquals(Arrays.asList(X, EMPTY, EMPTY, EMPTY, O, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard().getCells());
+
+    }
+
+    @Test
     public void testXWinner() {
         Map form = new HashMap<String, String>();
         form.put("gameType", "0");

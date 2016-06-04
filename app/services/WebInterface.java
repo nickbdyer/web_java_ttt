@@ -26,7 +26,7 @@ public class WebInterface implements UserInterface {
         }
     }
 
-    private boolean nextMoveIsValid(Board board, int position) {
+    public boolean nextMoveIsValid(Board board, int position) {
         return board.availableMoves().contains(position);
     }
 }
