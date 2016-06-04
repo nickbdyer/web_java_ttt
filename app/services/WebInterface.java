@@ -6,15 +6,9 @@ import uk.nickbdyer.tictactoe.UserInterface;
 
 public class WebInterface implements UserInterface {
 
-    private int lastInput = -1;
-
-    public void setLastInput(int position) {
-       this.lastInput = position;
-    }
-
     @Override
     public int getNumber() {
-        return lastInput;
+        return -1;
     }
 
     public String endGame(Board board) {
@@ -26,17 +20,13 @@ public class WebInterface implements UserInterface {
         }
     }
 
-    public void assignUserChoice(int position) {
-        setLastInput(position);
-    }
-
-    public void makeNextMove(Game game, Board board) {
-        if (nextMoveIsValid(game, board)) {
-            game.takeTurn(board, game.getCurrentPlayer().choosePosition(board));
+    public void makeNextMove(Game game, Board board, int position) {
+        if (nextMoveIsValid(board, position)) {
+            game.takeTurn(board, position);
         }
     }
 
-    private boolean nextMoveIsValid(Game game, Board board) {
-        return board.availableMoves().contains(game.getCurrentPlayer().choosePosition(board));
+    private boolean nextMoveIsValid(Board board, int position) {
+        return board.availableMoves().contains(position);
     }
 }

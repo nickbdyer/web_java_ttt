@@ -54,9 +54,10 @@ public class HomeController extends Controller {
 
     public Result play(Option<Integer> position) {
         if (position.isDefined()) {
-            ui.assignUserChoice(position.get());
+            ui.makeNextMove(currentGame, board, position.get());
+            return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
         }
-        ui.makeNextMove(currentGame, board);
+        ui.makeNextMove(currentGame, board, currentGame.getCurrentPlayer().choosePosition(board));
         return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
     }
 
