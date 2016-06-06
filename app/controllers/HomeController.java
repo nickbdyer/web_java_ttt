@@ -12,13 +12,16 @@ import views.html.game;
 import views.html.gameTypes;
 import views.html.index;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class HomeController extends Controller {
 
     private Board board;
     private Game currentGame;
-    private WebInterface ui;
+    private WebInterface ui = new WebInterface();
+    private Map<String, Board> boardMap = new HashMap<>();
+    private Map<String, Game> gameMap = new HashMap<>();
 
     public Board getBoard() {
         return board;
@@ -32,10 +35,6 @@ public class HomeController extends Controller {
         return ok(index.render("Please click below to start a new game!"));
     }
 
-    public Result game() {
-        return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
-    }
-
     public Result gameTypes() {
         return ok(gameTypes.render("Please choose a GameType", GameType.values()));
     }
@@ -47,12 +46,19 @@ public class HomeController extends Controller {
     public Result chooseGame() {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
         board = new Board();
-        ui = new WebInterface();
         currentGame = new Game(new PlayerFactory(ui).create(GameType.values()[Integer.valueOf(request.get("gameType")[0])]));
-        return redirect("/game");
+        boardMap.put(Integer.toString(board.hashCode()), board);
+        gameMap.put(Integer.toString(currentGame.hashCode()), currentGame);
+        session("game_id", Integer.toString(currentGame.hashCode()));
+        session("board_id", Integer.toString(board.hashCode()));
+        return redirect("/play");
     }
 
     public Result play(Option<Integer> position) {
+        board = boardMap.get(session("board_id"));
+        currentGame = gameMap.get(session("game_id"));
+        System.out.println(session());
+        System.out.println(boardMap.toString());
         if (position.isDefined() && !ui.nextMoveIsValid(board, currentGame.getCurrentPlayer().choosePosition(board))) {
             ui.makeNextMove(currentGame, board, position.get());
             return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board)));
