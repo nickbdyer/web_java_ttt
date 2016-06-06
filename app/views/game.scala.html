@@ -1,10 +1,12 @@
 @import uk.nickbdyer.tictactoe.Mark
 
-@(message: String, board: List[Mark], gameOverMessage: String, isOver: Boolean)
+@(message: String, board: List[Mark], gameOverMessage: String, isOver: Boolean, boardID: String)
 
 @mainRefresh("TicTacToe", isOver) {
 
     <h1>TicTacToe</h1>
+
+    <h2>@boardID</h2>
 
     @if(isOver) { @gameOverMessage } else { @message }
 
