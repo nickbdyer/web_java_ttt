@@ -102,7 +102,7 @@ public class HomeControllerTest extends WithApplication{
         form.put("gameType", "0");
         invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
-        Result result = homeController.game();
+        Result result = homeController.play(Option.empty());
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
