@@ -6,11 +6,6 @@ import static play.test.Helpers.*;
 
 public class IntegrationTest {
 
-    /**
-     * add your integration test here
-     * in this example we just check if the welcome page is being shown
-     */
-
     @Test
     public void homePageTest() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
@@ -31,9 +26,9 @@ public class IntegrationTest {
     @Test
     public void redirectsFromChooseGameToGame() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
-            browser.goTo("http://localhost:3333");
+            browser.goTo("http://localhost:3333/chooseGame");
             browser.click("#HvsH");
-            assertEquals("/game", browser.url());
+            assertEquals("/play", browser.url());
         });
     }
 

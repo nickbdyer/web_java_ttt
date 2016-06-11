@@ -70,7 +70,7 @@ public class HomeControllerTest extends WithApplication{
         Result result = invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
         assertEquals(SEE_OTHER, result.status());
-        assertEquals("/game", result.header("Location").get());
+        assertEquals("/play", result.header("Location").get());
         assertTrue(homeController.getGame().getCurrentPlayer() instanceof Human);
     }
 
@@ -81,7 +81,7 @@ public class HomeControllerTest extends WithApplication{
         Result result = invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
         assertEquals(SEE_OTHER, result.status());
-        assertEquals("/game", result.header("Location").get());
+        assertEquals("/play", result.header("Location").get());
         assertTrue(homeController.getGame().getCurrentPlayer() instanceof DelayedComputer);
     }
 
@@ -92,7 +92,7 @@ public class HomeControllerTest extends WithApplication{
         Result result = invokeWithContext(Helpers.fakeRequest().bodyForm(form),
                 () -> homeController.chooseGame());
         assertEquals(SEE_OTHER, result.status());
-        assertEquals("/game", result.header("Location").get());
+        assertEquals("/play", result.header("Location").get());
         assertTrue(homeController.getGame().getCurrentPlayer() instanceof DelayedComputer);
     }
     
