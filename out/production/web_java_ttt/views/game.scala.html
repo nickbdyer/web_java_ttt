@@ -1,0 +1,25 @@
+@import uk.nickbdyer.tictactoe.Mark
+
+@(message: String, board: List[Mark], gameOverMessage: String, isOver: Boolean, boardID: String)
+
+@mainRefresh("TicTacToe", isOver) {
+
+    <h1>TicTacToe</h1>
+
+    <h2>@boardID</h2>
+
+    @if(isOver) { @gameOverMessage } else { @message }
+
+    <br>
+    <br>
+
+    @grid(board, isOver)
+
+    <br>
+
+    @if(isOver) {
+        <form method="post" action="/newgame">
+            <input id="newgame" type="submit" value="Restart Game">
+        </form>
+    }
+}

@@ -1,0 +1,13 @@
+@(message: String)
+
+@main("TicTacToe") {
+
+<h1>TicTacToe</h1>
+
+   @message
+
+<form method="post" action="/newgame">
+    <input id="newgame" type="submit" value="New Game">
+</form>
+
+}
