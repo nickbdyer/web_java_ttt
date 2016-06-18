@@ -21,12 +21,12 @@ public class HomeController extends Controller {
     private Map<String, Board> boardMap = new HashMap<>();
     private Map<String, Game> gameMap = new HashMap<>();
 
-    public Board getBoard() {
-        return boardMap.get(session("board_id"));
+    public Board getBoard(String boardId) {
+        return boardMap.get(boardId);
     }
 
-    public Game getGame() {
-        return gameMap.get(session("game_id"));
+    public Game getGame(String gameId) {
+        return gameMap.get(gameId);
     }
 
     public Result index() {
@@ -38,13 +38,13 @@ public class HomeController extends Controller {
     }
 
     public Result newGame() {
-        session().clear();
         return redirect("/chooseGame");
     }
 
     public Result chooseGame() {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
         Board board = new Board();
+        board.getCells();
         Game game = new Game(new PlayerFactory(ui).create(GameType.values()[Integer.valueOf(request.get("gameType")[0])]));
         boardMap.put(Integer.toString(board.hashCode()), board);
         gameMap.put(Integer.toString(game.hashCode()), game);
@@ -54,8 +54,8 @@ public class HomeController extends Controller {
     }
 
     public Result play(Option<Integer> position) {
-        Board board = boardMap.get(session("board_id"));
-        Game currentGame = gameMap.get(session("game_id"));
+        Board board = getBoard(session("board_id"));
+        Game currentGame = getGame(session("game_id"));
         if (position.isDefined() && !ui.nextMoveIsValid(board, currentGame.getCurrentPlayer().choosePosition(board))) {
             ui.makeNextMove(currentGame, board, position.get());
             return ok(game.render("Let's Play!", board.getCells(), ui.endGame(board), currentGame.isOver(board), Integer.toString(board.hashCode())));
