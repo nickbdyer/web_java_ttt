@@ -9,14 +9,17 @@
     @message
 
     <form method="post" action="/setupGame">
-    @for(index <- 0 until playerTypes.length - 1) {
-        Player 1:
-        <input type="hidden" name="player1" value="@index">
-        <input id="@playerTypes(index)" type="submit" value="@playerTypes(index)">
-        Player 2:
-        <input type="hidden" name="player2" value="@index">
-        <input id="@playerTypes(index)" type="submit" value="@playerTypes(index)">
+        Player 1:<br />
+        @for(index <- 0 until playerTypes.length - 1) {
+            @playerTypes(index)<input id="p1@playerTypes(index)" name="player1" type="radio" value="@index">
+            <br />
         }
+        Player 2:<br />
+        @for(index <- 0 until playerTypes.length - 1) {
+            @playerTypes(index)<input id="p2@playerTypes(index)" name="player2" type="radio" value="@index">
+            <br />
+        }
+        <input id="setupGame" type="submit"/>
     </form>
 
 }

@@ -79,7 +79,7 @@ public class HomeControllerTest extends WithApplication {
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
-        assertTrue(contentAsString(result).contains("Please choose a GameType"));
+        assertTrue(contentAsString(result).contains("Please choose players:"));
     }
 
     @Test

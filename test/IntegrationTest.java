@@ -26,8 +26,10 @@ public class IntegrationTest {
     @Test
     public void redirectsFromChooseGameToGame() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, browser -> {
-            browser.goTo("http://localhost:3333/chooseGame");
-            browser.click("#HvsH");
+            browser.goTo("http://localhost:3333/choosePlayers");
+            browser.click("#p1H");
+            browser.click("#p2H");
+            browser.click("#setupGame");
             assertEquals("/play", browser.url());
         });
     }
