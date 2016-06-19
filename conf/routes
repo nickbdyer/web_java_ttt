@@ -4,9 +4,9 @@ POST    /newgame                    controllers.HomeController.newGame()
 
 GET     /play                       controllers.HomeController.play(position: Option[java.lang.Integer])
 
-POST    /chooseGame                 controllers.HomeController.chooseGame()
+POST    /setupGame                  controllers.HomeController.setupGame()
 
-GET     /chooseGame                 controllers.HomeController.gameTypes()
+GET     /choosePlayers              controllers.HomeController.playerTypes()
 
 
 # Map static resources from the /public folder to the /assets URL path

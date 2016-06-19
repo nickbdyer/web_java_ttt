@@ -1,0 +1,22 @@
+@import uk.nickbdyer.tictactoe.PlayerType
+
+@(message: String, playerTypes: Array[PlayerType])
+
+@main("TicTacToe") {
+
+    <h1>TicTacToe</h1>
+
+    @message
+
+    <form method="post" action="/setupGame">
+    @for(index <- 0 until playerTypes.length - 1) {
+        Player 1:
+        <input type="hidden" name="player1" value="@index">
+        <input id="@playerTypes(index)" type="submit" value="@playerTypes(index)">
+        Player 2:
+        <input type="hidden" name="player2" value="@index">
+        <input id="@playerTypes(index)" type="submit" value="@playerTypes(index)">
+        }
+    </form>
+
+}

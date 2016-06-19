@@ -6,14 +6,18 @@ import scala.Option;
 import services.WebInterface;
 import uk.nickbdyer.tictactoe.Board;
 import uk.nickbdyer.tictactoe.Game;
-import uk.nickbdyer.tictactoe.GameType;
+import uk.nickbdyer.tictactoe.PlayerType;
 import uk.nickbdyer.tictactoe.players.PlayerFactory;
 import views.html.game;
-import views.html.gameTypes;
 import views.html.index;
+import views.html.playerTypes;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static uk.nickbdyer.tictactoe.Mark.O;
+import static uk.nickbdyer.tictactoe.Mark.X;
 
 public class HomeController extends Controller {
 
@@ -33,23 +37,28 @@ public class HomeController extends Controller {
         return ok(index.render("Please click below to start a new game!"));
     }
 
-    public Result gameTypes() {
-        return ok(gameTypes.render("Please choose a GameType", GameType.values()));
+    public Result playerTypes() {
+        return ok(playerTypes.render("Please choose a GameType", PlayerType.values()));
     }
 
     public Result newGame() {
-        return redirect("/chooseGame");
+        return redirect("/choosePlayers");
     }
 
-    public Result chooseGame() {
+    public Result setupGame() {
         Map<String, String[]> request = request().body().asFormUrlEncoded();
+        PlayerType player1 = PlayerType.values()[Integer.valueOf(request.get("player1")[0])];
+        PlayerType player2 = PlayerType.values()[Integer.valueOf(request.get("player2")[0])];
+        PlayerFactory pf = new PlayerFactory(ui);
         Board board = new Board();
         board.getCells();
-        Game game = new Game(new PlayerFactory(ui).create(GameType.values()[Integer.valueOf(request.get("gameType")[0])]));
+        Game game = new Game(Arrays.asList(pf.create(player1, X), pf.create(player2, O)));
+
         boardMap.put(Integer.toString(board.hashCode()), board);
         gameMap.put(Integer.toString(game.hashCode()), game);
         session("game_id", Integer.toString(game.hashCode()));
         session("board_id", Integer.toString(board.hashCode()));
+
         return redirect("/play");
     }
 

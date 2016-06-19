@@ -16,7 +16,9 @@ import play.test.Helpers;
 import play.test.WithApplication;
 import scala.Option;
 import uk.nickbdyer.tictactoe.players.DelayedComputer;
+import uk.nickbdyer.tictactoe.players.DumbComputer;
 import uk.nickbdyer.tictactoe.players.Human;
+import uk.nickbdyer.tictactoe.players.PerfectComputer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,12 +70,12 @@ public class HomeControllerTest extends WithApplication {
     public void testNewGame() {
         Result result = new HomeController().newGame();
         assertEquals(SEE_OTHER, result.status());
-        assertEquals("/chooseGame", result.header("Location").get());
+        assertEquals("/choosePlayers", result.header("Location").get());
     }
 
     @Test
-    public void testGameTypes() {
-        Result result = new HomeController().gameTypes();
+    public void testplayerTypes() {
+        Result result = new HomeController().playerTypes();
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
@@ -81,11 +83,12 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void chooseGameRedirectsToPlay() {
+    public void setupGameRedirectsToPlay() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
+        form.put("player1", "0");
+        form.put("player2", "0");
 
-        Result result = route(fakeRequest(routes.HomeController.chooseGame()).bodyForm(form));
+        Result result = route(fakeRequest(routes.HomeController.setupGame()).bodyForm(form));
 
         assertEquals(SEE_OTHER, result.status());
         assertEquals("/play", result.header("Location").get());
@@ -94,11 +97,12 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testGameChoiceHvsH() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
 
-        homeController.chooseGame();
+        homeController.setupGame();
 
         assertFalse(Context.current().session().isEmpty());
         String gameId = Context.current().session().get("game_id");
@@ -108,39 +112,42 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testGameChoiceAivAi() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "3");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "1");
+        form.put("player2", "1");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
 
-        homeController.chooseGame();
+        homeController.setupGame();
 
         assertFalse(Context.current().session().isEmpty());
         String gameId = Context.current().session().get("game_id");
-        assertTrue(homeController.getGame(gameId).getCurrentPlayer() instanceof DelayedComputer);
+        assertTrue(homeController.getGame(gameId).getCurrentPlayer() instanceof DumbComputer);
     }
 
     @Test
     public void testGameChoicePAivPAi() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "6");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "2");
+        form.put("player2", "2");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
 
-        homeController.chooseGame();
+        homeController.setupGame();
 
         assertFalse(Context.current().session().isEmpty());
         String gameId = Context.current().session().get("game_id");
-        assertTrue(homeController.getGame(gameId).getCurrentPlayer() instanceof DelayedComputer);
+        assertTrue(homeController.getGame(gameId).getCurrentPlayer() instanceof PerfectComputer);
     }
 
     @Test
     public void testShowTheBoard() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
 
-        homeController.chooseGame();
+        homeController.setupGame();
 
         String boardId = Context.current().session().get("board_id");
         assertEquals(Arrays.asList(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), homeController.getBoard(boardId).getCells());
@@ -149,10 +156,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void playRouteWithFormReturnsOK() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         Result result = homeController.play(Option.apply(0));
 
@@ -164,10 +172,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void playRouteWithoutFormReturnsOK() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "4");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "1");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.apply(0));
 
@@ -180,10 +189,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testMakeAMove() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.apply(0));
 
@@ -194,10 +204,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testInvalidMoveNotMarked() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.apply(0));
         homeController.play(Option.apply(0));
@@ -209,10 +220,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testNoInputFromUser() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.empty());
 
@@ -223,10 +235,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testHumanCannotTakeComputerMove() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "4");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "2");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.apply(0));
         homeController.play(Option.apply(1));
@@ -245,10 +258,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testXWinner() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.apply(0));
         homeController.play(Option.apply(3));
@@ -265,10 +279,11 @@ public class HomeControllerTest extends WithApplication {
     @Test
     public void testOWinner() {
         Map form = new HashMap<String, String>();
-        form.put("gameType", "0");
-        RequestBuilder request = fakeRequest(routes.HomeController.chooseGame()).bodyForm(form);
+        form.put("player1", "0");
+        form.put("player2", "0");
+        RequestBuilder request = fakeRequest(routes.HomeController.setupGame()).bodyForm(form);
         Context.current.set(new Context(request));
-        homeController.chooseGame();
+        homeController.setupGame();
 
         homeController.play(Option.apply(8));
         homeController.play(Option.apply(0));
